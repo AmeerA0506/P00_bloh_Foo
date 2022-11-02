@@ -9,6 +9,8 @@ firstL -- TIMESTAMP\n
 	include errors/bugs discovered (or created)
 	
 -------------------------------------------------------------------------------
+KevinW, WanyingL -- 10/31/2022 14:05
+	revised design_wikiv0
 
 AmeerA, KevinW, WanyingL -- 10/31/2022 14:05
 	created a site map (part of design.pdf) & a repo to hold P00
