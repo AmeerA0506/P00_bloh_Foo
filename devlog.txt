@@ -18,5 +18,5 @@ AmeerA, KevinW, WanyingL -- 10/31/2022 14:05
 AmeerA, KevinW, WanyingL -- 11/1/2022 14:05
 	created a component map (part of design.pdf)	
 
-AmeerA, KevinW, WanyingL -- 11/1/2022 
-	finished design.pdf	
+KevinW, WanyingL -- 11/1/2022 9:37
+	finished design.pdf
