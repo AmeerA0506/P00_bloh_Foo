@@ -1,0 +1,20 @@
+Foo Bar:: Ameer Alnasser, Wanying Li, Kevin Wang
+SoftDev
+P00 -- devlog
+
+format: -----------------------------------------------------------------------
+
+firstL -- TIMESTAMP\n
+	explain what changes have been made
+	include errors/bugs discovered (or created)
+	
+-------------------------------------------------------------------------------
+
+AmeerA, KevinW, WanyingL -- 10/31/2022 14:05
+	created a site map (part of design.pdf) & a repo to hold P00
+	
+AmeerA, KevinW, WanyingL -- 11/1/2022 14:05
+	created a component map (part of design.pdf)	
+
+AmeerA, KevinW, WanyingL -- 11/1/2022 
+	finished design.pdf	
