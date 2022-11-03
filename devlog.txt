@@ -20,3 +20,6 @@ AmeerA, KevinW, WanyingL -- 11/1/2022 14:05
 
 KevinW, WanyingL -- 11/1/2022 9:37
 	finished design.pdf
+
+KevinW, WanyingL -- 11/1/2022 9:35
+	revised design.pdf: added profile page & addressed comments
