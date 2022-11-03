@@ -1,8 +1,8 @@
 # P00_bloh_Foo by Foo Bar
 
-(PM) Ameer Alnasser - authentication backend (sign-up, log-in) + profile page. 
+(PM) Ameer Alnasser - authentication backend (sign-up, log-in) + profile page  
 Kevin Wang - HTML things (homepage, blog page, blog-history page). 
-Wanying Li  - blog backend (create, edit, directory). 
+Wanying Li  - blog backend (create, edit, directory)  
 
 ## Description of website/app
 
