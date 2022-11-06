@@ -1,4 +1,4 @@
-# P00_bloh_Foo by Foo Bar
+# P00_bloh_Foo by Bloh Foo
 
 (PM) Ameer Alnasser - authentication backend (sign-up, log-in) + profile page  
 Kevin Wang - HTML things (homepage, blog page, blog-history page).  
