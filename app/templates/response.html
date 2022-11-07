@@ -1,0 +1,25 @@
+<!--
+Foo Bar:: Ameer Alnasser, Wan Ying Li, Kevin Wang
+SoftDev
+k19 -- username/password authentication
+2022-11-05
+time spent: 0.8 hrs
+-->
+
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+
+    <body>
+        <p>Foo Bar:: Ameer Alnasser, Wan Ying Li, Kevin Wang</p>
+        {% if logged_in %}
+            <p>Logged in as {{username}}</p>
+            <a href="./logout">Log out</a>
+        {% else %}
+            <p>You are not logged in</p>
+            <a href="./login">Log in here</a>
+        {% endif %}
+    </body>
+</html>

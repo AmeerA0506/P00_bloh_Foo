@@ -1,0 +1,41 @@
+<!--
+Foo Bar:: Ameer Alnasser, Wan Ying Li, Kevin Wang
+SoftDev
+k19 -- username/password authentication
+2022-11-05
+time spent: 0.8 hrs
+-->
+
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <title> LOGIN PAGE </title>
+  </head>
+
+  <body>
+      <p>Foo Bar:: Ameer Alnasser, Wan Ying Li, Kevin Wang</p>
+      <form method="post">
+        <label>Username:</label>
+        <input type=text name=username value="{{ username }}">
+
+
+        <br>
+        <label>Password:</label>
+        <input type=text name=password>
+        <br>
+
+        
+        <input type=submit value=Login>
+
+        <p>username: lol</p>
+        <p>password: lol</p>
+        
+        <p>{{error_message}}</p>
+
+      </form>
+
+  </body>
+
+</html>
