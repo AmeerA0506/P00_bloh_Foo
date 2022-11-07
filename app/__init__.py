@@ -63,10 +63,30 @@ def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
 
-@app.route('/blog')
-def blog():
-    return render_template(blog_title = "hi", author="me", )
+@app.route('/blog/<string:author>/<string:title>')
+def blog(author, title):
+    return render_template("blog.html", blog_title = title, author = author, timestamp="11/11/23 5:32:53", content="lorem ipsum")
     
+@app.route("/blog/<string:author>/<string:title>/history/page/<int:page>")
+def blog_history(author, title, page):
+    same_blogs_different_versions_by_timestamp = [
+        #[timestamp, content]
+        ["11/9/23 5:32:53", "lorem ipsum 1"],
+        ["11/8/23 5:32:53", "lorem ipsum 2"],
+        ["11/7/23 5:32:53", "lorem ipsum 3"]
+    ]
+    print(page)
+    return render_template(
+        "blog_history.html",
+        blog_title = title,
+        author = author, 
+        timestamp = same_blogs_different_versions_by_timestamp[page-1][0],
+        content= same_blogs_different_versions_by_timestamp[page-1][1],
+        page_number = page,
+        is_last_page = page == len(same_blogs_different_versions_by_timestamp)
+    ) 
+
+
 if __name__ == "__main__": #false if this file imported as module
     #enable debugging, auto-restarting of server when this file is modified
     app.debug = True 

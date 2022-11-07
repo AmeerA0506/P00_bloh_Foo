@@ -9,5 +9,8 @@
         <p>last updated: {{timestamp}}</p>
         <p>{{content}}</p>
     </body>
-    <a href="./{{blog_title}}/history/page/1">View history</a>
+
+    {% if not is_last_page %}
+    <a href="./{{page_number + 1}}">Next page</a>
+    {% endif %}
 </html>
