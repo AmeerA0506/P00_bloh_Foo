@@ -24,3 +24,7 @@ KevinW, WanyingL -- 11/1/2022 9:37
 KevinW, WanyingL -- 11/1/2022 9:35
 	revised design.pdf: added profile page & addressed comments
 	edited readme
+
+KevinW -- 11/7/2022 16:56
+	created boilerplate code for the blog page and blog history, ready to
+	insert the results of the backend into it
