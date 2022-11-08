@@ -1,7 +1,7 @@
 """
 Foo Bar:: Ameer Alnasser, Wan Ying Li, Kevin Wang
 SoftDev
-k19 -- username/password authentication
+P00 
 2022-11-05
 time spent: 1.0 hrs
 """
@@ -15,6 +15,7 @@ from flask import request           #facilitate form submission
 
 app = Flask(__name__)    #create Flask object
 
+# START of username/password authentication -------------------------------------------------------------------------------
 CORRECT_username="lol"
 CORRECT_password="lol"
 
@@ -55,18 +56,64 @@ def login():
         else:
             return render_template("login.html")
 
-        
-
 @app.route('/logout')
 def logout():
     # remove the username from the session if it's there
     session.pop('username', None)
     return redirect(url_for('index'))
+# END of username/password authentication ------------------------------------------------------------------------------------------
 
+'''
+import sqlite3   #enable control of an sqlite database
+DB_FILE="discobandit.db"
+
+db = sqlite3.connect(DB_FILE) #open if file exists, otherwise create
+c = db.cursor()               #facilitate db ops -- you will use cursor to trigger db events
+
+# function(s) to initialize DB 
+
+
+db.commit() #save changes
+db.close()  #close database
+'''
+# create blog
+# Q: how to get username & timestamp
+@app.route('/create')
+def create(title, content):
+    # check if the user is logged in
+    if 'username' not in session:
+        return render_template("response.html", logged_in=False)
+        
+    # when users submitted their blog
+    if request.method == 'POST': 
+        # add newly created blog to BLOGS db
+        c.execute(f'INSERT INTO BLOGS VALUES("{username}", "{request.form["title"]}", "{request.form["content"]}", {timestamp});')
+    
+    return render_template("create.html", blog_title = title, content = content, timestamp = "11/11/23 5:32:53", author = username)
+
+# edit blog
+@app.route('/edit')
+def edit(content):
+    # check if the user is logged in
+    if 'username' not in session:
+        return render_template("response.html", logged_in=False)
+
+    # check if user is blog owner 
+    
+        
+    # when users submitted their blog
+    if request.method == 'POST': 
+        # add newly created blog to BLOGS db
+        c.execute(f'INSERT INTO BLOGS VALUES("{username}", {title}, {request.form["content"]}, {timestamp});')
+    
+    return render_template("edit.html", blog_title = title, content = content, timestamp = "11/11/23 5:32:53", author = username)
+
+# blog page
 @app.route('/blog/<string:author>/<string:title>')
 def blog(author, title):
     return render_template("blog.html", blog_title = title, author = author, timestamp="11/11/23 5:32:53", content="lorem ipsum")
-    
+
+# blog hisotry page    
 @app.route("/blog/<string:author>/<string:title>/history/page/<int:page>")
 def blog_history(author, title, page):
     same_blogs_different_versions_by_timestamp = [
@@ -81,7 +128,7 @@ def blog_history(author, title, page):
         blog_title = title,
         author = author, 
         timestamp = same_blogs_different_versions_by_timestamp[page-1][0],
-        content= same_blogs_different_versions_by_timestamp[page-1][1],
+        content = same_blogs_different_versions_by_timestamp[page-1][1],
         page_number = page,
         is_last_page = page == len(same_blogs_different_versions_by_timestamp)
     ) 

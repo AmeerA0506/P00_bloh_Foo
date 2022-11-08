@@ -28,3 +28,8 @@ KevinW, WanyingL -- 11/1/2022 9:35
 KevinW -- 11/7/2022 16:56
 	created boilerplate code for the blog page and blog history, ready to
 	insert the results of the backend into it
+
+WanyingL -- 11/8/2022 17:04
+	finished the skeletons of create and edit page 
+	had questions on accessing varibles/syntax to get the desire info
+
