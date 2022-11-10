@@ -79,7 +79,7 @@ db.close()  #close database
 # create blog
 # Q: how to get username & timestamp
 @app.route('/create')
-def create(title, content):
+def create():
     # check if the user is logged in
     if 'username' not in session:
         return render_template("response.html", logged_in=False)

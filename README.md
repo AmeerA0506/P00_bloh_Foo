@@ -8,6 +8,9 @@ Wanying Li  - blog backend (create, edit, directory)
  A blog in which logged in users are able to create and edit blogs through a user identification service. They will also be able to only read others' blogs without editing, accessible through a directory page 
 ## How to launch
  1. clone the repo P00_bloh_Foo
- 2. inside of P00_bloh_Foo, while ensuring Flask is installed on your machine, run the command ```python3 ./app/__init__.py```. There should be a URL
- 3. go onto this URL by either clicking it or typing in the URL provided
- 4. sign up and use the website and have fun!!
+ 2. cd inside of P00_bloh_Foo and run
+```pip install -r req.txt```  
+ 3. Run the command
+```python3 ./app/__init__.py```  
+ 4. There should be a URL like localhost:5000. Go onto this URL by either ctrl-clicking it or typing in the URL provided
+ 5. sign up and use the website and have fun!!
