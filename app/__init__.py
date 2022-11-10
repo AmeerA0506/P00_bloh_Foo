@@ -9,7 +9,7 @@ time spent: 1.0 hrs
 from flask import Flask             #facilitate flask webserving
 from flask import render_template   #facilitate jinja templating
 from flask import request           #facilitate form submission
-
+from datetime import datetime
 #the conventional way:
 #from flask import Flask, render_template, request
 
@@ -87,9 +87,9 @@ def create():
     # when users submitted their blog
     if request.method == 'POST': 
         # add newly created blog to BLOGS db
-        c.execute(f'INSERT INTO BLOGS VALUES("{username}", "{request.form["title"]}", "{request.form["content"]}", {timestamp});')
+        c.execute(f'INSERT INTO BLOGS VALUES("{session["username"]}", "{request.form["title"]}", "{request.form["content"]}", {timestamp});')
     
-    return render_template("create.html", blog_title = title, content = content, timestamp = "11/11/23 5:32:53", author = username)
+    return render_template("create.html", author = session["username"])
 
 # edit blog
 @app.route('/edit')
