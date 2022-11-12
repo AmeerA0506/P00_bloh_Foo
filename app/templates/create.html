@@ -1,33 +1,28 @@
 <!DOCTYPE html>
-
 <html>
 
-  <head>
-    <title> LOGIN PAGE </title>
-  </head>
+    <head>
+        <title>CREATE</title>
+    </head>
 
-  <body>
-      <p>Foo Bar:: Ameer Alnasser, Wan Ying Li, Kevin Wang</p>
-      <form method="post">
-        <label>Title:</label>
-        <input type=text name=title>
+    <body>
 
+        <form method="post">
 
-        <br>
-        <label>Password:</label>
-        <input type=text name=password>
-        <br>
+            <label>Your Blog Title:</label>
+            <input type=text name=blog_title>
+            <br>
 
+            <label>Your Blog Content:</label>
+            <textarea name=content rows="80" cols="80">Jump-start your creativity.</textarea>
+            <br>
+
+            <input type=submit value=submit>
+    
+          </form>
         
-        <input type=submit value=Login>
+    </body>
 
-        <p>username: lol</p>
-        <p>password: lol</p>
-        
-        <p>{{error_message}}</p>
-
-      </form>
-
-  </body>
+    <a href="./Home">Home Page</a>
 
 </html>
