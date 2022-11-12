@@ -10,6 +10,9 @@ from flask import Flask             #facilitate flask webserving
 from flask import render_template   #facilitate jinja templating
 from flask import request           #facilitate form submission
 from datetime import datetime
+from flask import session, redirect, url_for
+import sqlite3   #enable control of an sqlite database
+
 #the conventional way:
 #from flask import Flask, render_template, request
 
@@ -19,10 +22,29 @@ app = Flask(__name__)    #create Flask object
 CORRECT_username="lol"
 CORRECT_password="lol"
 
-from flask import session, redirect, url_for
-
 # Set the secret key to some random bytes. Keep this really secret!
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+
+DB_FILE="blog_backend.db"
+
+db = sqlite3.connect(DB_FILE, check_same_thread=False) #open if file exists, otherwise create
+c = db.cursor()               #facilitate db ops -- you will use cursor to trigger db events
+
+db.execute("DROP TABLE if exists blogs;")
+db.execute("DROP TABLE if exists authentication;")
+# function(s) to initialize DB 
+c.execute("CREATE TABLE blogs(username text, title text, blog text, timestamp int);")
+c.execute("CREATE TABLE authentication(username text, password text);")
+c.execute("""INSERT INTO blogs VALUES ("kevin", "kevin's first blog", "hi, this is my first blog but oldest version. I'm like really cool and stuff", 1668292177);""")
+c.execute("""INSERT INTO blogs VALUES ("kevin", "kevin's first blog", "hi, this is my first blog but second oldest version. I'm like really cool and stuff", 1668292277);""")
+c.execute("""INSERT INTO blogs VALUES ("kevin", "kevin's first blog", "hi, this is my first blog. I'm like really cool and stuff. i just edited this", 1668292477);""")
+c.execute("""INSERT INTO blogs VALUES ("kevin", "kevin's second blog", "hi, this is my second blog. I'm like really cool and stuff", 1668292300);""")
+c.execute("""INSERT INTO blogs VALUES ("kevin", "kevin's third blog", "hi, this is my third blog. I'm like really cool and stuff", 1668292500);""")
+c.execute("""INSERT INTO blogs VALUES ("Ameer", "AA's first blog", "I wish i was as cool as kevin", 1668292700);""")
+c.execute("""INSERT INTO blogs VALUES ("WanYing", "Wan Ying's first blog", "I wish i was as cool as kevin", 1668292700);""")
+c.execute("""SELECT * FROM blogs WHERE username = "kevin" AND title = "kevin's first blog";""")
+
+db.commit() #save changes
 
 @app.route('/')
 def index():
@@ -63,19 +85,8 @@ def logout():
     return redirect(url_for('index'))
 # END of username/password authentication ------------------------------------------------------------------------------------------
 
-'''
-import sqlite3   #enable control of an sqlite database
-DB_FILE="discobandit.db"
-
-db = sqlite3.connect(DB_FILE) #open if file exists, otherwise create
-c = db.cursor()               #facilitate db ops -- you will use cursor to trigger db events
-
-# function(s) to initialize DB 
 
 
-db.commit() #save changes
-db.close()  #close database
-'''
 # create blog
 # Q: how to get username & timestamp
 @app.route('/create')
@@ -111,30 +122,30 @@ def edit(content):
 # blog page
 @app.route('/blog/<string:author>/<string:title>')
 def blog(author, title):
-    return render_template("blog.html", blog_title = title, author = author, timestamp="11/11/23 5:32:53", content="lorem ipsum")
+    c.execute(f'SELECT * FROM blogs WHERE username = "{author}" AND title = "{title}" ORDER BY timestamp DESC LIMIT 1;')
+    #print(c.fetchone())
+    content, timestamp = c.fetchone()[2:4]
+    return render_template("blog.html", blog_title = title, author = author, timestamp=timestamp, content=content)
 
 # blog hisotry page    
 @app.route("/blog/<string:author>/<string:title>/history/page/<int:page>")
 def blog_history(author, title, page):
-    same_blogs_different_versions_by_timestamp = [
-        #[timestamp, content]
-        ["11/9/23 5:32:53", "lorem ipsum 1"],
-        ["11/8/23 5:32:53", "lorem ipsum 2"],
-        ["11/7/23 5:32:53", "lorem ipsum 3"]
-    ]
-    print(page)
+    c.execute(f'SELECT * FROM blogs WHERE username = "{author}" AND title = "{title}" ORDER BY timestamp DESC LIMIT -1 OFFSET 1;')
+    old_blogs = c.fetchall()
+
     return render_template(
         "blog_history.html",
         blog_title = title,
         author = author, 
-        timestamp = same_blogs_different_versions_by_timestamp[page-1][0],
-        content = same_blogs_different_versions_by_timestamp[page-1][1],
+        timestamp = old_blogs[page-1][3],
+        content = old_blogs[page-1][2],
         page_number = page,
-        is_last_page = page == len(same_blogs_different_versions_by_timestamp)
+        is_last_page = page == len(old_blogs)
     ) 
 
 
 if __name__ == "__main__": #false if this file imported as module
     #enable debugging, auto-restarting of server when this file is modified
-    app.debug = True 
+    #app.debug = True 
     app.run()
+    db.close()  #close database
