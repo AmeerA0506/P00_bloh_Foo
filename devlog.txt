@@ -46,6 +46,6 @@ KevinW -- 11/7/2022 18:23
 	hardcoded in values for the blog table
 	wrote SQL queries linking the blog page and the blog history page with the hardcoded values
 
-WanyingL -- 11/12/2022 
+WanyingL -- 11/12/2022 22:04
 	finished and tested front-end of create page, directory, and edit page
 	
