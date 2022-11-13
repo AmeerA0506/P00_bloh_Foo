@@ -19,32 +19,11 @@ import sqlite3   #enable control of an sqlite database
 app = Flask(__name__)    #create Flask object
 
 # START of username/password authentication -------------------------------------------------------------------------------
-CORRECT_username="lol"
+CORRECT_username="kevin"
 CORRECT_password="lol"
 
 # Set the secret key to some random bytes. Keep this really secret!
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
-
-DB_FILE="blog_backend.db"
-
-db = sqlite3.connect(DB_FILE, check_same_thread=False) #open if file exists, otherwise create
-c = db.cursor()               #facilitate db ops -- you will use cursor to trigger db events
-
-db.execute("DROP TABLE if exists blogs;")
-db.execute("DROP TABLE if exists authentication;")
-# function(s) to initialize DB 
-c.execute("CREATE TABLE blogs(username text, title text, blog text, timestamp int);")
-c.execute("CREATE TABLE authentication(username text, password text);")
-c.execute("""INSERT INTO blogs VALUES ("kevin", "kevin's first blog", "hi, this is my first blog but oldest version. I'm like really cool and stuff", 1668292177);""")
-c.execute("""INSERT INTO blogs VALUES ("kevin", "kevin's first blog", "hi, this is my first blog but second oldest version. I'm like really cool and stuff", 1668292277);""")
-c.execute("""INSERT INTO blogs VALUES ("kevin", "kevin's first blog", "hi, this is my first blog. I'm like really cool and stuff. i just edited this", 1668292477);""")
-c.execute("""INSERT INTO blogs VALUES ("kevin", "kevin's second blog", "hi, this is my second blog. I'm like really cool and stuff", 1668292300);""")
-c.execute("""INSERT INTO blogs VALUES ("kevin", "kevin's third blog", "hi, this is my third blog. I'm like really cool and stuff", 1668292500);""")
-c.execute("""INSERT INTO blogs VALUES ("Ameer", "AA's first blog", "I wish i was as cool as kevin", 1668292700);""")
-c.execute("""INSERT INTO blogs VALUES ("WanYing", "Wan Ying's first blog", "I wish i was as cool as kevin", 1668292700);""")
-c.execute("""SELECT * FROM blogs WHERE username = "kevin" AND title = "kevin's first blog";""")
-
-db.commit() #save changes
 
 @app.route('/')
 def index():
@@ -85,11 +64,32 @@ def logout():
     return redirect(url_for('index'))
 # END of username/password authentication ------------------------------------------------------------------------------------------
 
+# START of database creation-------------------------------------------------------------------------------------------------------
+DB_FILE="blog_backend.db"
 
+db = sqlite3.connect(DB_FILE, check_same_thread=False) #open if file exists, otherwise create
+c = db.cursor()               #facilitate db ops -- you will use cursor to trigger db events
+
+db.execute("DROP TABLE if exists blogs;")
+db.execute("DROP TABLE if exists authentication;")
+# function(s) to initialize DB 
+c.execute("CREATE TABLE blogs(username text, title text, blog text, timestamp int);")
+c.execute("CREATE TABLE authentication(username text, password text);")
+c.execute("""INSERT INTO blogs VALUES ("kevin", "kevin's first blog", "hi, this is my first blog but oldest version. I'm like really cool and stuff", 1668292177);""")
+c.execute("""INSERT INTO blogs VALUES ("kevin", "kevin's first blog", "hi, this is my first blog but second oldest version. I'm like really cool and stuff", 1668292277);""")
+c.execute("""INSERT INTO blogs VALUES ("kevin", "kevin's first blog", "hi, this is my first blog. I'm like really cool and stuff. i just edited this", 1668292477);""")
+c.execute("""INSERT INTO blogs VALUES ("kevin", "kevin's second blog", "hi, this is my second blog. I'm like really cool and stuff", 1668292300);""")
+c.execute("""INSERT INTO blogs VALUES ("kevin", "kevin's third blog", "hi, this is my third blog. I'm like really cool and stuff", 1668292500);""")
+c.execute("""INSERT INTO blogs VALUES ("Ameer", "AA's first blog", "I wish i was as cool as kevin", 1668292700);""")
+c.execute("""INSERT INTO blogs VALUES ("WanYing", "Wan Ying's first blog", "I wish i was as cool as kevin", 1668292700);""")
+c.execute("""SELECT * FROM blogs WHERE username = "kevin" AND title = "kevin's first blog";""")
+
+db.commit() #save changes
+#END of database creation---------------------------------------------------------------------------------------------------------------
 
 # create blog
 # Q: how to get username & timestamp
-@app.route('/create')
+@app.route('/create', methods=['GET', 'POST'])
 def create():
     # check if the user is logged in
     if 'username' not in session:
@@ -98,26 +98,34 @@ def create():
     # when users submitted their blog
     if request.method == 'POST': 
         # add newly created blog to BLOGS db
-        c.execute(f'INSERT INTO BLOGS VALUES("{session["username"]}", "{request.form["title"]}", "{request.form["content"]}", {timestamp});')
+        c.execute(f'INSERT INTO BLOGS VALUES("{session["username"]}", "{request.form["title"]}", "{request.form["content"]}", {timestamp});')   
     
-    return render_template("create.html", author = session["username"])
+    return render_template("create.html")
 
 # edit blog
-@app.route('/edit')
-def edit(content):
+@app.route('/blog/<string:author>/<string:title>/edit', methods=['GET', 'POST'])
+def edit(author, title):
     # check if the user is logged in
     if 'username' not in session:
         return render_template("response.html", logged_in=False)
 
     # check if user is blog owner 
-    
+    if session["username"] != author:
+        return "You don't have access to edit this page because you are not the author."  
         
     # when users submitted their blog
     if request.method == 'POST': 
         # add newly created blog to BLOGS db
-        c.execute(f'INSERT INTO BLOGS VALUES("{username}", {title}, {request.form["content"]}, {timestamp});')
+        c.execute(f'INSERT INTO blogs VALUES("{session["username"]}", {title}, {request.form["content"]}, {timestamp});')
     
-    return render_template("edit.html", blog_title = title, content = content, timestamp = "11/11/23 5:32:53", author = username)
+    return render_template("edit.html", blog_title = title, author = session["username"])
+
+# directory page
+@app.route('/directory')
+def directory():
+    #c.execute(f'.mode box')
+    print(c.execute(f'SELECT * FROM blogs;'))  
+    return render_template("directory.html")
 
 # blog page
 @app.route('/blog/<string:author>/<string:title>')
