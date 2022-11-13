@@ -19,7 +19,7 @@ import sqlite3   #enable control of an sqlite database
 app = Flask(__name__)    #create Flask object
 
 # START of username/password authentication -------------------------------------------------------------------------------
-CORRECT_username="kevin"
+CORRECT_username="lol"
 CORRECT_password="lol"
 
 # Set the secret key to some random bytes. Keep this really secret!
