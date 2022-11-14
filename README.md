@@ -9,7 +9,7 @@ Wanying Li  - blog backend (create, edit, directory)
 ## How to launch
  1. clone the repo P00_bloh_Foo
  2. cd inside of P00_bloh_Foo and run  
-```pip install -r req.txt```  
+```pip install -r requirements.txt```  
  3. Run the command  
 ```python3 ./app/__init__.py```  
  4. There should be a URL like localhost:5000. Go onto this URL by either ctrl-clicking it or typing in the URL provided
