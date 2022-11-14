@@ -73,15 +73,15 @@ c = db.cursor()               #facilitate db ops -- you will use cursor to trigg
 db.execute("DROP TABLE if exists blogs;")
 db.execute("DROP TABLE if exists authentication;")
 # function(s) to initialize DB 
-c.execute("CREATE TABLE blogs(username text, title text, blog text, timestamp int);")
+c.execute("CREATE TABLE blogs(username text, title text, blog text, timestamp text);")
 c.execute("CREATE TABLE authentication(username text, password text);")
-c.execute("""INSERT INTO blogs VALUES ("kevin", "kevin's first blog", "hi, this is my first blog but oldest version. I'm like really cool and stuff", 1668292177);""")
-c.execute("""INSERT INTO blogs VALUES ("kevin", "kevin's first blog", "hi, this is my first blog but second oldest version. I'm like really cool and stuff", 1668292277);""")
-c.execute("""INSERT INTO blogs VALUES ("kevin", "kevin's first blog", "hi, this is my first blog. I'm like really cool and stuff. i just edited this", 1668292477);""")
-c.execute("""INSERT INTO blogs VALUES ("kevin", "kevin's second blog", "hi, this is my second blog. I'm like really cool and stuff", 1668292300);""")
-c.execute("""INSERT INTO blogs VALUES ("kevin", "kevin's third blog", "hi, this is my third blog. I'm like really cool and stuff", 1668292500);""")
-c.execute("""INSERT INTO blogs VALUES ("Ameer", "AA's first blog", "I wish i was as cool as kevin", 1668292700);""")
-c.execute("""INSERT INTO blogs VALUES ("WanYing", "Wan Ying's first blog", "I wish i was as cool as kevin", 1668292700);""")
+c.execute("""INSERT INTO blogs VALUES ("kevin", "kevin's first blog", "hi, this is my first blog but oldest version. I'm like really cool and stuff", "2022-11-14 13:45:59.908057");""")
+c.execute("""INSERT INTO blogs VALUES ("kevin", "kevin's first blog", "hi, this is my first blog but second oldest version. I'm like really cool and stuff", "2022-12-14 13:45:59.908057");""")
+c.execute("""INSERT INTO blogs VALUES ("kevin", "kevin's first blog", "hi, this is my first blog. I'm like really cool and stuff. i just edited this", "2022-12-15 13:45:59.908057");""")
+c.execute("""INSERT INTO blogs VALUES ("kevin", "kevin's second blog", "hi, this is my second blog. I'm like really cool and stuff", "2022-12-15 13:45:59.908057");""")
+c.execute("""INSERT INTO blogs VALUES ("kevin", "kevin's third blog", "hi, this is my third blog. I'm like really cool and stuff", "2022-12-15 13:45:59.908057");""")
+c.execute("""INSERT INTO blogs VALUES ("Ameer", "AA's first blog", "I wish i was as cool as kevin", "2022-12-15 13:45:59.908057");""")
+c.execute("""INSERT INTO blogs VALUES ("WanYing", "Wan Ying's first blog", "I wish i was as cool as kevin", "2022-12-15 13:45:59.908057");""")
 c.execute("""SELECT * FROM blogs WHERE username = "kevin" AND title = "kevin's first blog";""")
 
 db.commit() #save changes
@@ -94,13 +94,17 @@ def create():
     # check if the user is logged in
     if 'username' not in session:
         return render_template("response.html", logged_in=False)
-        
+
     # when users submitted their blog
     if request.method == 'POST': 
         # add newly created blog to BLOGS db
-        c.execute(f'INSERT INTO BLOGS VALUES("{session["username"]}", "{request.form["title"]}", "{request.form["content"]}", {timestamp});')   
-    
-    return render_template("create.html")
+        #print(f'INSERT INTO BLOGS VALUES("{session["username"]}", "{request.form["blog_title"]}", "{request.form["content"]}", {datetime.now()});')
+        c.execute(f'INSERT INTO BLOGS VALUES("{session["username"]}", "{request.form["blog_title"]}", "{request.form["content"]}", "{datetime.now()}");')   
+        #c.execute("SELECT * FROM BLOGS;")
+        #print(c.fetchall())
+        return redirect(url_for('blog', author=session["username"], title=request.form["blog_title"]))
+    else:
+        return render_template("create.html")
 
 # edit blog
 @app.route('/blog/<string:author>/<string:title>/edit', methods=['GET', 'POST'])
@@ -116,7 +120,7 @@ def edit(author, title):
     # when users submitted their blog
     if request.method == 'POST': 
         # add newly created blog to BLOGS db
-        c.execute(f'INSERT INTO blogs VALUES("{session["username"]}", {title}, {request.form["content"]}, {timestamp});')
+        c.execute(f'INSERT INTO blogs VALUES("{session["username"]}", "{title}", "{request.form["content"]}", "{datetime.now()}");')
     
     return render_template("edit.html", blog_title = title, author = session["username"])
 
@@ -140,16 +144,18 @@ def blog(author, title):
 def blog_history(author, title, page):
     c.execute(f'SELECT * FROM blogs WHERE username = "{author}" AND title = "{title}" ORDER BY timestamp DESC LIMIT -1 OFFSET 1;')
     old_blogs = c.fetchall()
-
-    return render_template(
-        "blog_history.html",
-        blog_title = title,
-        author = author, 
-        timestamp = old_blogs[page-1][3],
-        content = old_blogs[page-1][2],
-        page_number = page,
-        is_last_page = page == len(old_blogs)
-    ) 
+    if (old_blogs):
+        return render_template(
+            "blog_history.html",
+            blog_title = title,
+            author = author, 
+            timestamp = old_blogs[page-1][3],
+            content = old_blogs[page-1][2],
+            page_number = page,
+            is_last_page = page == len(old_blogs)
+        ) 
+    else:
+        return "No history found"
 
 
 if __name__ == "__main__": #false if this file imported as module
