@@ -3,7 +3,7 @@ Bloh Foo:: Ameer Alnasser, Wan Ying Li, Kevin Wang
 SoftDev
 P00 
 2022-11-05
-time spent: 1.0 hrs
+time spent: 20 hrs
 """
 
 from flask import Flask             #facilitate flask webserving
@@ -12,6 +12,7 @@ from flask import request           #facilitate form submission
 from datetime import datetime
 from flask import session, redirect, url_for
 import sqlite3   #enable control of an sqlite database
+import random
 
 #the conventional way:
 #from flask import Flask, render_template, request
@@ -19,7 +20,7 @@ import sqlite3   #enable control of an sqlite database
 app = Flask(__name__)    #create Flask object
 
 # Set the secret key to some random bytes. Keep this really secret!
-app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/' + bytes(random.randint(0, 100000))
 
 # database creation-------------------------------------------------------------------------------------------------------
 DB_FILE="blog_backend.db"
@@ -164,7 +165,7 @@ def edit(author, title):
     else:
         c.execute("SELECT * FROM blogs WHERE username = ? AND title = ? ORDER BY timestamp DESC LIMIT 1", (author, title))
         content = c.fetchone()[2]
-        return render_template("edit.html", blog_title = title, old_blog_content = content)
+        return render_template("edit.html", blog_title = title, old_blog_content = content, author = session["username"])
 
 # blog page----------------------------------------------------------------------------------------------------------------
 @app.route('/blog/<string:author>/<string:title>')
@@ -184,7 +185,7 @@ def blog_history(author, title, page):
     if 'username' not in session:
         return redirect(url_for("not_logged_in"))
 
-    c.execute("SELECT * FROM blogs WHERE username = ? AND title = ? ORDER BY timestamp DESC LIMIT 1", (author, title))
+    c.execute("SELECT * FROM blogs WHERE username = ? AND title = ? ORDER BY timestamp DESC LIMIT -1 OFFSET 1;", (author, title))
     old_blogs = c.fetchall()
     if (old_blogs):
         return render_template(

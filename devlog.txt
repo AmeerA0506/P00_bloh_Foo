@@ -48,4 +48,7 @@ KevinW -- 11/7/2022 18:23
 
 WanyingL -- 11/12/2022 22:04
 	finished and tested front-end of create page, directory, and edit page
+
+AmeerA, KevinW, WanyingL -- 11/14/2022 23:06
+	finished!!!
 	
