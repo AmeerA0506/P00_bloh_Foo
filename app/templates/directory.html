@@ -6,14 +6,21 @@
     </head>
 
     <body>
-
         <h1>Directory</h1>
         <ol>
-            <li><a href="./blog/kevin/kevin's first blog">kevin's first blog by kevin</a></li>
+            {% for blog in unique_blogs %}
+                <li>
+                    <p>
+                        <a href="./blog/{{blog[0]}}/{{blog[1]}}">{{blog[1]}}</a> written by <a href="../profile/{{blog[0]}}">{{blog[0]}}</a>
+                    <p>
+
+                </li>
+            {% endfor %}
         </ol>
         
     </body>
 
-    <a href="./Home">Home Page(to be implemented)</a>
+    <a href="./">Home Page</a>
+    <a href="./logout">Log out</a>
 
 </html>

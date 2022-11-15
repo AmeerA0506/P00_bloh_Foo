@@ -10,7 +10,10 @@
         <p>{{content}}</p>
     </body>
     <a href="./{{blog_title}}/history/page/1">View history</a>
-    <br>
+    
+    {% if is_blog_owner %}
     <a href="./{{blog_title}}/edit">Edit</a>
+    {% endif %}
+
 
 </html>

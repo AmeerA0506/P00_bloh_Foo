@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>{{username}}'s blogs</title>
+    </head>
+
+    <body>
+        <h1>{{username}}'s blogs</h1>
+        <ol>
+            {% for blog in existing_blogs %}
+                <li><a href="../blog/{{username}}/{{blog[0]}}">{{blog[0]}}</a></li>
+            {% endfor %}
+        </ol>
+        
+    </body>
+
+    <a href="./">Home Page</a>
+    <a href="../logout">Log out</a>
+
+</html>

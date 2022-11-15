@@ -6,20 +6,23 @@
     </head>
 
     <body>
+
         <h1>Your Blog Title: {{blog_title}}</h1>
+
         <form method="post">
+
             <label>Your New Blog Content:</label>
             <br>
-            <textarea name=content rows="20" cols="80">Revise Here.</textarea>
+            <textarea name=content rows="20" cols="80">{{old_blog_content}}</textarea>
             <br>
-
             <input type=submit value=submit>
     
           </form>
         
     </body>
 
-    <a href="./Home">Home Page(to be implemented)</a>
-    <a href="./blog/{{author}}/{{blog_title}}">Back to the blog(broken)</a>
+    <a href="./">Home Page</a>
+    <a href="./blog/{{author}}/{{blog_title}}">Back to the blog</a>
+    <a href="./logout">Log out</a>
 
 </html>

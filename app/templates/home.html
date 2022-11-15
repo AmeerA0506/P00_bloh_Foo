@@ -17,9 +17,14 @@ time spent: 0.8 hrs
         {% if logged_in %}
             <p>Logged in as {{username}}</p>
             <a href="./logout">Log out</a>
+            <a href="./create">Create a new blog</a>
+            <a href="./profile/{{username}}">View your profile</a>
+            <a href="./directory">View other blogs</a>
         {% else %}
             <p>You are not logged in</p>
             <a href="./login">Log in here</a>
+            <br>
+            <a href="./signup">Sign up here</a>
         {% endif %}
     </body>
 </html>
